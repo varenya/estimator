@@ -38,20 +38,30 @@ model Note {
 }
 
 model Project {
-  id          String @id @default(cuid())
+  id          String     @id @default(cuid())
   projectName String
+  Estimate    Estimate[]
+}
+
+model Estimate {
+  id        String     @id @default(cuid())
+  project   Project    @relation(fields: [projectId], references: [id])
+  projectId String
+  LineItem  LineItem[]
 }
 
 model LineItem {
-  id          String @id @default(cuid())
+  id          String    @id @default(cuid())
   item        String
   description String
   width       Float?
   height      Float?
   quantity    Float
-  unit        Unit   @default(SFT)
+  unit        Unit      @default(SFT)
   rate        Float?
   cost        Float
+  Estimate    Estimate? @relation(fields: [estimateId], references: [id])
+  estimateId  String?
 }
 
 enum Unit {
