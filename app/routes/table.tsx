@@ -1,5 +1,8 @@
 import { json, useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
+import { getLineItems } from "~/models/lineitem.server";
+import { LineItem } from "@prisma/client";
+import invariant from "tiny-invariant";
 
 type Size = {
   width: number;
@@ -10,7 +13,7 @@ type Unit = "SFT" | "M" | "NUMBER";
 
 type Rate = "LUMPSUM" | number;
 
-type LineItem = {
+type LineItemApp = {
   id: string;
   item: string;
   description: string;
@@ -21,34 +24,41 @@ type LineItem = {
   cost: number;
 };
 
+function toLineItemApp(lineItemDb: LineItem): LineItemApp {
+  if (lineItemDb.width && lineItemDb.height) {
+    return {
+      id: lineItemDb.id,
+      item: lineItemDb.item,
+      description: lineItemDb.description,
+      size: { width: lineItemDb.width, height: lineItemDb.height },
+      quantity: lineItemDb.quantity,
+      unit: lineItemDb.unit,
+      rate: lineItemDb.rate ? lineItemDb.rate : "LUMPSUM",
+      cost: lineItemDb.cost,
+    };
+  }
+
+  return {
+    id: lineItemDb.id,
+    item: lineItemDb.item,
+    description: lineItemDb.description,
+    quantity: lineItemDb.quantity,
+    unit: lineItemDb.unit,
+    rate: lineItemDb.rate ? lineItemDb.rate : "LUMPSUM",
+    cost: lineItemDb.cost,
+  };
+}
+
 export const loader: LoaderFunction = async () => {
-  return json<LineItem[]>([
-    {
-      id: "1",
-      item: "Safety Door",
-      description:
-        "38mm thick door including laminate on both sides with 18\" x 4' MS jaali in chrome finish. Door stopper, interlock, handles and hinges included.",
-      size: { width: 3.5, height: 3.5 },
-      quantity: 1,
-      unit: "SFT",
-      rate: "LUMPSUM",
-      cost: 31450,
-    },
-    {
-      id: "2",
-      item: "Wood finish laminate ceiling & wall panelling at entry",
-      description:
-        "Framing made of 12mm plywood finished in approved wooden finish laminate.",
-      quantity: 23.25,
-      unit: "SFT",
-      rate: 850,
-      cost: 19762,
-    },
-  ]);
+  const lineItmes = await getLineItems({
+    estimateId: "cl0xzjpkv00083syf6vrbbahj",
+  });
+
+  return json(lineItmes.map(toLineItemApp));
 };
 
 export default function Table() {
-  const lineItems = useLoaderData<LineItem[]>();
+  const lineItems = useLoaderData<LineItemApp[]>();
   return (
     <main className="flex min-h-screen items-center bg-slate-100">
       <div className="mx-auto w-4/6 overflow-hidden rounded-lg bg-slate-100 shadow-xl">

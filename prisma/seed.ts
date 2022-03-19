@@ -1,42 +1,46 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "@node-rs/bcrypt";
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
-
-  // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
-    // no worries if it doesn't exist yet
-  });
-
-  const hashedPassword = await bcrypt.hash("rachelrox", 10);
-
-  const user = await prisma.user.create({
+  const sampleProject = await prisma.project.create({
     data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
-      },
+      projectName: "test project",
+    },
+  });
+  const sampleEstimate = await prisma.estimate.create({
+    data: {
+      projectId: sampleProject.id,
     },
   });
 
-  await prisma.note.create({
+  await prisma.lineItem.create({
     data: {
-      title: "My first note",
-      body: "Hello, world!",
-      userId: user.id,
+      item: "Safety Door",
+      description:
+        "38mm thick door including laminate on both sides with 18\" x 4' MS jaali in chrome finish. Door stopper, interlock, handles and hinges included.",
+      width: 3.5,
+      height: 3.5,
+      quantity: 1,
+      unit: "SFT",
+      rate: null,
+      cost: 31450,
+      estimateId: sampleEstimate.id,
     },
   });
 
-  await prisma.note.create({
+  await prisma.lineItem.create({
     data: {
-      title: "My second note",
-      body: "Hello, world!",
-      userId: user.id,
+      item: "Wood finish laminate ceiling & wall panelling at entry",
+      description:
+        "Framing made of 12mm plywood finished in approved wooden finish laminate.",
+      quantity: 23.25,
+      width: null,
+      height: null,
+      unit: "SFT",
+      rate: 850,
+      cost: 19762,
+      estimateId: sampleEstimate.id,
     },
   });
 
