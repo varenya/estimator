@@ -40,14 +40,14 @@ model Note {
 model Project {
   id          String     @id @default(cuid())
   projectName String
-  Estimate    Estimate[]
+  estimates   Estimate[]
 }
 
 model Estimate {
   id        String     @id @default(cuid())
   project   Project    @relation(fields: [projectId], references: [id])
   projectId String
-  LineItem  LineItem[]
+  lineItems LineItem[]
 }
 
 model LineItem {
