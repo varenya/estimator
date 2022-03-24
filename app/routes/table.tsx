@@ -1,6 +1,10 @@
 import { ActionFunction, Form, json, redirect, useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
-import { createLineItem, getLineItems } from "~/models/lineitem.server";
+import {
+  createLineItem,
+  getFirstEstimateId,
+  getLineItems,
+} from "~/models/lineitem.server";
 import { LineItem, Unit } from "@prisma/client";
 import invariant from "tiny-invariant";
 
@@ -50,8 +54,12 @@ function toLineItemApp(lineItemDb: LineItem): LineItemApp {
 }
 
 export const loader: LoaderFunction = async () => {
+  const estimate = await getFirstEstimateId();
+  if (!estimate) {
+    return json([]);
+  }
   const lineItmes = await getLineItems({
-    estimateId: "cl0xzjpkv00083syf6vrbbahj",
+    estimateId: estimate.id,
   });
 
   return json(lineItmes.map(toLineItemApp));

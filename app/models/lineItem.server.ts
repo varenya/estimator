@@ -13,3 +13,7 @@ export function createLineItem(lineItem: Omit<LineItem, "id">) {
     data: lineItem,
   });
 }
+
+export function getFirstEstimateId() {
+  return prisma.estimate.findFirst();
+}
