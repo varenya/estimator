@@ -4,7 +4,7 @@ import {
   createLineItem,
   getFirstEstimateId,
   getLineItems,
-} from "~/models/lineitem.server";
+} from "~/models/lineItem.server";
 import { LineItem, Unit } from "@prisma/client";
 import invariant from "tiny-invariant";
 
