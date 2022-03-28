@@ -35,14 +35,16 @@ model Note {
 model Project {
   id          String     @id @default(cuid())
   projectName String
+  clientName  String
   estimates   Estimate[]
 }
 
 model Estimate {
-  id        String     @id @default(cuid())
-  projectId String
-  project   Project    @relation(fields: [projectId], references: [id])
-  lineItems LineItem[]
+  id           String     @id @default(cuid())
+  projectId    String
+  estimateName String
+  project      Project    @relation(fields: [projectId], references: [id])
+  lineItems    LineItem[]
 }
 
 model LineItem {

@@ -6,11 +6,13 @@ async function seed() {
   const sampleProject = await prisma.project.create({
     data: {
       projectName: "test project",
+      clientName: "shyam",
     },
   });
   const sampleEstimate = await prisma.estimate.create({
     data: {
       projectId: sampleProject.id,
+      estimateName: "test estimate",
     },
   });
 
