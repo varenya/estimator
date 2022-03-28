@@ -11,6 +11,7 @@ async function seed() {
   const sampleEstimate = await prisma.estimate.create({
     data: {
       projectId: sampleProject.id,
+      estimateName: "test estimate",
     },
   });
 
