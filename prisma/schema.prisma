@@ -35,6 +35,7 @@ model Note {
 model Project {
   id          String     @id @default(cuid())
   projectName String
+  clientName  String
   estimates   Estimate[]
 }
 
