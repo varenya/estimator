@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async () => {
 function CreateProject() {
   return (
     <div className="overflow-hidden rounded-lg shadow-lg">
-      <div className="mx-auto border-t-8 border-teal-300 bg-white p-8">
+      <div className="mx-auto border-t-8 border-teal-600 bg-white p-8">
         <p className="mb-4 p-4 text-center text-3xl text-gray-700">
           Project Info
         </p>
@@ -47,7 +47,7 @@ function CreateProject() {
             </label>
             <input
               id="clientName"
-              className="rounded-lg border-2 px-2 py-3 text-xl"
+              className="rounded-lg border-2 px-2 py-3 text-xl outline-teal-400"
               type="text"
               name="clientName"
             />
@@ -58,7 +58,7 @@ function CreateProject() {
             </label>
             <input
               id="projectName"
-              className="rounded-lg border-2 px-2 py-3 text-xl"
+              className="rounded-lg border-2 px-2 py-3 text-xl outline-teal-400"
               type="text"
               name="projectName"
             />
@@ -66,7 +66,7 @@ function CreateProject() {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="rounded bg-teal-500 px-5 py-3 text-xl text-white"
+              className="rounded bg-teal-600 px-6 py-4 text-xl text-white"
             >
               Create Project
             </button>
@@ -82,12 +82,12 @@ export default function Index() {
   if (projects.length === 0) {
     return (
       <div className="min-h-screen">
-        <section className="bg-gray-800 py-12 text-teal-400">
+        <section className="bg-gray-800 py-12 text-white">
           <header>
             <h1 className="p-8 text-center text-5xl">Project Estimator</h1>
           </header>
           <h2 className="mt-2 mb-4 text-center text-2xl">
-            Hey 👋🏻, seems like you don't have any projects. Lets get started
+            Hey 👋🏻, seems like you don't have any projects. Lets get started!
           </h2>
         </section>
         <div className="project-view flex items-center justify-center bg-gray-200">
