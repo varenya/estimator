@@ -1,7 +1,6 @@
 import { Project } from "@prisma/client";
 import {
   ActionFunction,
-  Form,
   json,
   Link,
   LoaderFunction,
@@ -9,6 +8,7 @@ import {
   useLoaderData,
 } from "remix";
 import invariant from "tiny-invariant";
+import { CreateProject } from "~/components/CreateProject";
 import { createProject, getProjects } from "~/models/project.server";
 import indexStyles from "~/styles/index_page.css";
 
@@ -32,56 +32,6 @@ export function links() {
 export const loader: LoaderFunction = async () => {
   return json<Project[]>(await getProjects());
 };
-
-function CreateProject() {
-  return (
-    <div className="overflow-hidden rounded-lg shadow-lg">
-      <div className="mx-auto border-t-8 border-teal-600 bg-white p-8">
-        <p className="mb-4 p-4 text-center text-2xl text-gray-700 md:text-3xl">
-          Project Info
-        </p>
-        <Form method="post">
-          <div className="mb-6 flex flex-col">
-            <label
-              htmlFor="clientName"
-              className="mb-2 text-lg text-gray-500 md:text-xl"
-            >
-              Client Name{" "}
-            </label>
-            <input
-              id="clientName"
-              className="rounded-lg border-2 px-2 py-3 text-lg outline-teal-400 md:text-xl"
-              type="text"
-              name="clientName"
-            />
-          </div>
-          <div className="mb-4 flex flex-col">
-            <label
-              htmlFor="projectName"
-              className="mb-2 text-lg text-gray-500 md:text-xl"
-            >
-              Project Name{" "}
-            </label>
-            <input
-              id="projectName"
-              className="rounded-lg border-2 px-2 py-3 text-lg outline-teal-400 md:text-xl"
-              type="text"
-              name="projectName"
-            />
-          </div>
-          <div className="flex justify-end pt-2">
-            <button
-              type="submit"
-              className="rounded bg-teal-600 px-6 py-4 text-xl text-white"
-            >
-              Create Project
-            </button>
-          </div>
-        </Form>
-      </div>
-    </div>
-  );
-}
 
 export default function Index() {
   const projects = useLoaderData<Project[]>();
