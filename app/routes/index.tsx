@@ -37,28 +37,34 @@ function CreateProject() {
   return (
     <div className="overflow-hidden rounded-lg shadow-lg">
       <div className="mx-auto border-t-8 border-teal-600 bg-white p-8">
-        <p className="mb-4 p-4 text-center text-3xl text-gray-700">
+        <p className="mb-4 p-4 text-center text-2xl text-gray-700 md:text-3xl">
           Project Info
         </p>
         <Form method="post">
           <div className="mb-6 flex flex-col">
-            <label htmlFor="clientName" className="mb-2 text-xl text-gray-500">
+            <label
+              htmlFor="clientName"
+              className="mb-2 text-lg text-gray-500 md:text-xl"
+            >
               Client Name{" "}
             </label>
             <input
               id="clientName"
-              className="rounded-lg border-2 px-2 py-3 text-xl outline-teal-400"
+              className="rounded-lg border-2 px-2 py-3 text-lg outline-teal-400 md:text-xl"
               type="text"
               name="clientName"
             />
           </div>
           <div className="mb-4 flex flex-col">
-            <label htmlFor="projectName" className="mb-2 text-xl text-gray-500">
+            <label
+              htmlFor="projectName"
+              className="mb-2 text-lg text-gray-500 md:text-xl"
+            >
               Project Name{" "}
             </label>
             <input
               id="projectName"
-              className="rounded-lg border-2 px-2 py-3 text-xl outline-teal-400"
+              className="rounded-lg border-2 px-2 py-3 text-lg outline-teal-400 md:text-xl"
               type="text"
               name="projectName"
             />
@@ -84,14 +90,16 @@ export default function Index() {
       <div className="min-h-screen">
         <section className="bg-gray-800 py-12 text-white">
           <header>
-            <h1 className="p-8 text-center text-5xl">Project Estimator</h1>
+            <h1 className="p-8 text-center text-4xl md:text-5xl">
+              Project Estimator
+            </h1>
           </header>
-          <h2 className="mt-2 mb-4 text-center text-2xl">
+          <h2 className="mt-2 mb-4 px-5 text-center text-xl md:text-2xl">
             Hey 👋🏻, seems like you don't have any projects. Lets get started!
           </h2>
         </section>
         <div className="project-view flex items-center justify-center bg-gray-200">
-          <div className="mx-auto w-4/5 lg:w-1/3">
+          <div className="project-creation-form mx-auto">
             <CreateProject />
           </div>
         </div>

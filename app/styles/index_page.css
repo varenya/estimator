@@ -1,3 +1,13 @@
 .project-view {
   min-height: calc(100vh - 264px);
 }
+
+.project-creation-form {
+  width: 420px;
+}
+
+@media only screen and (min-width: 1024px) {
+  .project-creation-form {
+    width: 620px;
+  }
+}
