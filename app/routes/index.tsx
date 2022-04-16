@@ -1,5 +1,3 @@
-import { Project } from "@prisma/client";
-import { Layout } from "~/components/Layout/IndexLayout";
 import {
   ActionFunction,
   json,
@@ -30,10 +28,6 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect("/");
 };
 
-export const loader: LoaderFunction = async () => {
-  return json<Project[]>(await getProjects());
-};
-
 function ProjectUI({
   projectName,
   clientName,
@@ -61,48 +55,5 @@ function ProjectUI({
 }
 
 export default function Index() {
-  const projects = useLoaderData<Project[]>();
-  if (projects.length === 0) {
-    return (
-      <Layout onboardExp>
-        <CreateProject />
-      </Layout>
-    );
-  }
-
-  return (
-    <div className="min-h-full bg-gray-200">
-      <section className="bg-gray-800 py-12 text-white">
-        <header>
-          <h1 className="p-8 text-center text-4xl md:text-5xl">Dashboard</h1>
-        </header>
-      </section>
-      <div className="p-8">
-        <div className="flex items-stretch gap-4 pt-8">
-          <aside className="w-80 rounded-md bg-white shadow-lg">
-            <nav className="p-4">
-              <header className="text-center text-xl font-thin">
-                Projects
-              </header>
-              <ol>
-                {projects.map((project) => (
-                  <li key={project.id} className="pb-4">
-                    <Link
-                      to={`/project/${project.projectName}`}
-                      className="text-md block text-left hover:underline"
-                    >
-                      <span className="font-thin capitalize">
-                        {project.projectName}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-          <main className="flex-1 rounded-md bg-white shadow-lg"></main>
-        </div>
-      </div>
-    </div>
-  );
+  return <div></div>;
 }
