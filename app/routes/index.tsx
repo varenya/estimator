@@ -1,32 +1,20 @@
-import {
-  ActionFunction,
-  json,
-  Link,
-  LoaderFunction,
-  redirect,
-  useLoaderData,
-} from "remix";
+import { Project } from "@prisma/client";
+import { ActionFunction, json, redirect, useLoaderData } from "remix";
 import invariant from "tiny-invariant";
 import { CreateProject } from "~/components/CreateProject";
-import { createProject, getProjects } from "~/models/project.server";
-import indexStyles from "~/styles/index_page.css";
+import {
+  createProject,
+  getFirstProject,
+  getProjects,
+} from "~/models/project.server";
 
-export function links() {
-  return [{ rel: "stylesheet", href: indexStyles }];
-}
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  const clientName = formData.get("clientName");
-  const projectName = formData.get("projectName");
-
-  invariant(typeof clientName === "string");
-  invariant(typeof projectName === "string");
-
-  await createProject({ clientName, projectName });
-  return redirect("/");
+type ProjectLoaderData = {
+  project: Awaited<ReturnType<typeof getFirstProject>>;
 };
+
+export async function loader() {
+  return json<ProjectLoaderData>({ project: await getFirstProject() });
+}
 
 function ProjectUI({
   projectName,
@@ -55,5 +43,13 @@ function ProjectUI({
 }
 
 export default function Index() {
-  return <div></div>;
+  const { project } = useLoaderData<ProjectLoaderData>();
+  console.log({ project });
+  if (project) {
+    return (
+      <div>
+        <ol></ol>
+      </div>
+    );
+  }
 }
