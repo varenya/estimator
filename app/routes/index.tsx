@@ -44,11 +44,19 @@ function ProjectUI({
 
 export default function Index() {
   const { project } = useLoaderData<ProjectLoaderData>();
-  console.log({ project });
   if (project) {
     return (
-      <div>
-        <ol></ol>
+      <div className="flex p-8">
+        <ol className="flex w-full flex-col">
+          {project.estimates.map((estimate) => (
+            <li
+              key={estimate.id}
+              className="mx-auto w-1/2 rounded-xl bg-primary-100 p-2 text-center text-lg text-primary-300 shadow-md"
+            >
+              {estimate.estimateName}
+            </li>
+          ))}
+        </ol>
       </div>
     );
   }

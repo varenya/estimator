@@ -83,7 +83,7 @@ export default function App() {
                   {projects.map((project) => (
                     <li key={project.id} className="pb-4">
                       <Link
-                        to={`/project/${project.projectName}`}
+                        to={`/project/${project.id}`}
                         className="block rounded-md bg-primary-300 py-2 px-2 text-center  text-lg font-medium  capitalize text-white"
                       >
                         {project.projectName}
