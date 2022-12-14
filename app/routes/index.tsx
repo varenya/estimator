@@ -1,38 +1,20 @@
 import { Project } from "@prisma/client";
-import { Layout } from "~/components/Layout/IndexLayout";
-import {
-  ActionFunction,
-  json,
-  Link,
-  LoaderFunction,
-  redirect,
-  useLoaderData,
-} from "remix";
+import { ActionFunction, json, redirect, useLoaderData } from "remix";
 import invariant from "tiny-invariant";
 import { CreateProject } from "~/components/CreateProject";
-import { createProject, getProjects } from "~/models/project.server";
-import indexStyles from "~/styles/index_page.css";
+import {
+  createProject,
+  getFirstProject,
+  getProjects,
+} from "~/models/project.server";
 
-export function links() {
-  return [{ rel: "stylesheet", href: indexStyles }];
+type ProjectLoaderData = {
+  project: Awaited<ReturnType<typeof getFirstProject>>;
+};
+
+export async function loader() {
+  return json<ProjectLoaderData>({ project: await getFirstProject() });
 }
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-
-  const clientName = formData.get("clientName");
-  const projectName = formData.get("projectName");
-
-  invariant(typeof clientName === "string");
-  invariant(typeof projectName === "string");
-
-  await createProject({ clientName, projectName });
-  return redirect("/");
-};
-
-export const loader: LoaderFunction = async () => {
-  return json<Project[]>(await getProjects());
-};
 
 function ProjectUI({
   projectName,
@@ -61,48 +43,21 @@ function ProjectUI({
 }
 
 export default function Index() {
-  const projects = useLoaderData<Project[]>();
-  if (projects.length === 0) {
+  const { project } = useLoaderData<ProjectLoaderData>();
+  if (project) {
     return (
-      <Layout onboardExp>
-        <CreateProject />
-      </Layout>
+      <div className="flex p-8">
+        <ol className="flex w-full flex-col">
+          {project.estimates.map((estimate) => (
+            <li
+              key={estimate.id}
+              className="mx-auto w-1/2 rounded-xl bg-primary-100 p-2 text-center text-lg text-primary-300 shadow-md"
+            >
+              {estimate.estimateName}
+            </li>
+          ))}
+        </ol>
+      </div>
     );
   }
-
-  return (
-    <div className="min-h-full bg-gray-200">
-      <section className="bg-gray-800 py-12 text-white">
-        <header>
-          <h1 className="p-8 text-center text-4xl md:text-5xl">Dashboard</h1>
-        </header>
-      </section>
-      <div className="p-8">
-        <div className="flex items-stretch gap-4 pt-8">
-          <aside className="w-80 rounded-md bg-white shadow-lg">
-            <nav className="p-4">
-              <header className="text-center text-xl font-thin">
-                Projects
-              </header>
-              <ol>
-                {projects.map((project) => (
-                  <li key={project.id} className="pb-4">
-                    <Link
-                      to={`/project/${project.projectName}`}
-                      className="text-md block text-left hover:underline"
-                    >
-                      <span className="font-thin capitalize">
-                        {project.projectName}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </aside>
-          <main className="flex-1 rounded-md bg-white shadow-lg"></main>
-        </div>
-      </div>
-    </div>
-  );
 }
